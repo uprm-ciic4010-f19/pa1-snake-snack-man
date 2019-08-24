@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>res/music/BG.wav</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Music/BG.wav</location>
+		</link>
+		<link>
+			<name>res/music/Elevator.wav</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Music/Elevator.wav</location>
+		</link>
+	</linkedResources>
 </projectDescription>

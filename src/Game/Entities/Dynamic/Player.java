@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+import Game.GameStates.State;
+
 /**
  * Created by AlexVR on 7/2/2018.
  */
@@ -17,6 +19,7 @@ public class Player {
 
     public int xCoord;
     public int yCoord;
+    public int SlowingSpeed=10;
 
     public int moveCounter;
 
@@ -35,18 +38,37 @@ public class Player {
 
     public void tick(){
         moveCounter++;
-        if(moveCounter>=5) {
-            checkCollisionAndMove();
+        if(moveCounter>=SlowingSpeed) {
+          checkCollisionAndMove();
             moveCounter=0;
         }
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)){
+
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)&&direction!="Down"){
+
             direction="Up";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)){
+        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)&&direction!="Up"){
             direction="Down";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)){
+        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)&&direction!="Right"){
             direction="Left";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)){
+        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)&&direction!="Left"){
             direction="Right";
+        }
+      //To remove speed press "-" on the number pad
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_SUBTRACT)){
+        	SlowingSpeed++;
+
+        }
+        //To add speed press "+" on the number pad
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ADD)){
+        	SlowingSpeed--;
+
+        }
+        //To add a piece of the tail press "n"
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)){
+//        	Tail tail=(new Tail(xCoord,yCoord,handler));
+//        	handler.getWorld().body.addLast(tail);
+//        	handler.getWorld().playerLocation[tail.x][tail.y] = true;
+
         }
 
     }
@@ -55,6 +77,10 @@ public class Player {
         handler.getWorld().playerLocation[xCoord][yCoord]=false;
         int x = xCoord;
         int y = yCoord;
+        for(int i=0;i<handler.getWorld().body.size();i++) {
+        	if(x==handler.getWorld().body.get(i).x&&y==handler.getWorld().body.get(i).y)
+        		kill();
+        }
         switch (direction){
             case "Left":
                 if(xCoord==0){
@@ -220,7 +246,7 @@ public class Player {
                             tail=(new Tail(this.xCoord-1,this.yCoord,handler));
                         }else{
                             tail=(new Tail(this.xCoord+1,this.yCoord,handler));
-                        } System.out.println("Tu biscochito");
+                        }
                     }
                 }else{
                     if(handler.getWorld().body.getLast().y!=0){
@@ -238,10 +264,12 @@ public class Player {
         }
         handler.getWorld().body.addLast(tail);
         handler.getWorld().playerLocation[tail.x][tail.y] = true;
+        SlowingSpeed=SlowingSpeed-6;
     }
 
     public void kill(){
-        length = 0;
+        lenght = 0;
+//        State.setState(handler.getGame().GameOver);
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
 
