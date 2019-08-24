@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Player {
 
-    public int lenght;
+    public int length;
     public boolean justAte;
     private Handler handler;
 
@@ -29,7 +29,7 @@ public class Player {
         moveCounter = 0;
         direction= "Right";
         justAte = false;
-        lenght= 1;
+        length = 1;
 
     }
 
@@ -92,25 +92,38 @@ public class Player {
             Eat();
         }
 
-        if(!handler.getWorld().body.isEmpty()) {
+        if(!handler.getWorld().body.isEmpty()) { //handler.getWorld().body linkedlist that keep the values of each tail (not the head)
             handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
             handler.getWorld().body.removeLast();
-            handler.getWorld().body.addFirst(new Tail(x, y,handler));
+            handler.getWorld().body.addFirst(new Tail(x, y,handler)); //Removes the last present tail and adds a new one in front
         }
 
     }
 
-    public void render(Graphics g,Boolean[][] playeLocation){
-        Random r = new Random();
+    public void render(Graphics g,Boolean[][] playerLocation){
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
-                g.setColor(Color.WHITE);
+                g.setColor(Color.YELLOW); //Color the pacman character
 
-                if(playeLocation[i][j]||handler.getWorld().appleLocation[i][j]){
+                if(playerLocation[i][j]||handler.getWorld().appleLocation[i][j]){
                     g.fillRect((i*handler.getWorld().GridPixelsize),
                             (j*handler.getWorld().GridPixelsize),
                             handler.getWorld().GridPixelsize,
                             handler.getWorld().GridPixelsize);
+                }
+
+                if (!handler.getWorld().body.isEmpty()) {
+                    //Call each tail as a ghost
+                    //TODO: since its a linked list its adding a new "tail" in the front and removing the bottom one, inconsistent design.
+                    for (int index = 0; index < handler.getWorld().body.size(); index++){
+                        int xLoc = handler.getWorld().body.get(index).x;
+                        int yLoc = handler.getWorld().body.get(index).y;
+                        g.setColor(handler.getWorld().body.get(index).ghostColor);
+                        g.fillRect((xLoc*handler.getWorld().GridPixelsize),
+                                (yLoc*handler.getWorld().GridPixelsize),
+                                handler.getWorld().GridPixelsize,
+                                handler.getWorld().GridPixelsize);
+                    }
                 }
 
             }
@@ -120,7 +133,7 @@ public class Player {
     }
 
     public void Eat(){
-        lenght++;
+        length++;
         Tail tail= null;
         handler.getWorld().appleLocation[xCoord][yCoord]=false;
         handler.getWorld().appleOnBoard=false;
@@ -228,7 +241,7 @@ public class Player {
     }
 
     public void kill(){
-        lenght = 0;
+        length = 0;
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
 

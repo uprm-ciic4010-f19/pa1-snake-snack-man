@@ -33,7 +33,7 @@ public abstract class WorldBase {
     public Boolean[][] appleLocation;
 
 
-    public Boolean[][] playerLocation;
+    public Boolean[][] playerLocation; //It's an array where true = snake node and false = empty
 
     public LinkedList<Tail> body = new LinkedList<>();
 
@@ -55,7 +55,7 @@ public abstract class WorldBase {
 
         for (int i = 0; i <= 800; i = i + GridPixelsize) {
 
-            g.setColor(Color.white);
+            g.setColor(Color.blue); //This changes the gridlines colors
             g.drawLine(0, i, handler.getWidth() , i);
             g.drawLine(i,0,i,handler.getHeight());
 
