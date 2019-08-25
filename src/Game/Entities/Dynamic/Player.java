@@ -268,8 +268,8 @@ public class Player {
     }
 
     public void kill(){
-        lenght = 0;
-//        State.setState(handler.getGame().GameOver);
+        length = 0;
+        State.setState(handler.getGame().GameOver);
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
 

@@ -16,6 +16,31 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>res/Buttons/Exit.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/Exit.png</location>
+		</link>
+		<link>
+			<name>res/Buttons/ExitP.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/ExitP.png</location>
+		</link>
+		<link>
+			<name>res/Buttons/Pac.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/Pac.png</location>
+		</link>
+		<link>
+			<name>res/Buttons/PacP.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/PacP.png</location>
+		</link>
+		<link>
+			<name>res/Sheets/PacManGameOver.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Downloads/PacManGameOver.png</location>
+		</link>
+		<link>
 			<name>res/music/BG.wav</name>
 			<type>1</type>
 			<location>C:/Users/Victor/Music/BG.wav</location>

@@ -82,7 +82,7 @@ public class GameSetUp implements Runnable {
         gameState = new GameState(handler);
         menuState = new MenuState(handler);
         pauseState = new PauseState(handler);
-
+        GameOver = new Game.GameStates.GameOver(handler);
         State.setState(menuState);
 
         try {

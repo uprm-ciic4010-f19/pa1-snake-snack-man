@@ -36,7 +36,7 @@ public class DisplayScreen {
         frame.setVisible(true);
         frame.setBackground(Color.black);
 
-        try {
+        try{
             frame.setIconImage(ImageIO.read(new File("res/Sheets/icon.png")));
         } catch (IOException e) {
             e.printStackTrace();

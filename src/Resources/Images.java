@@ -14,7 +14,10 @@ public class Images {
     public static BufferedImage[] butstart;
     public static BufferedImage title;
     public static BufferedImage Pause;
+    public static BufferedImage GameOver;
     public static BufferedImage[] Resume;
+    public static BufferedImage[] TryAgain;
+    public static BufferedImage[] Exit;
     public static BufferedImage[] BTitle;
     public static BufferedImage[] Options;
     public static ImageIcon icon;
@@ -24,15 +27,23 @@ public class Images {
         butstart = new BufferedImage[3];
         Resume = new BufferedImage[2];
         BTitle = new BufferedImage[2];
+        Exit = new BufferedImage[2];
         Options = new BufferedImage[2];
+        TryAgain = new BufferedImage[2];
 
         try {
 
             title = ImageIO.read(getClass().getResourceAsStream("/Sheets/Title.png"));
+            GameOver = ImageIO.read(getClass().getResourceAsStream("/Sheets/PacManGameOver.png"));
             Pause = ImageIO.read(getClass().getResourceAsStream("/Buttons/Pause.png"));
             Resume[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Resume.png"));
             Resume[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/ResumeP.png"));
             BTitle[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/BTitle.png"));
+            Exit[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Exit.png"));
+            Exit[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/ExitP.png"));
+            TryAgain[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Pac.png"));
+            TryAgain[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/PacP.png"));
+            
             BTitle[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/BTitleP.png"));
             Options[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Options.png"));
             Options[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/OptionsP.png"));
