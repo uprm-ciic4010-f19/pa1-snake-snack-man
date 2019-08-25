@@ -13,14 +13,15 @@ import Game.GameStates.State;
  */
 public class Player {
 
+    public double score = 0;
     public int length;
     public boolean justAte;
     private Handler handler;
 
     public int xCoord;
     public int yCoord;
-    public int SlowingSpeed=10;
 
+    public int SlowingSpeed=10;
     public int moveCounter;
 
     public String direction;//is your first name one?
@@ -40,19 +41,22 @@ public class Player {
         moveCounter++;
         if(moveCounter>=SlowingSpeed) {
           checkCollisionAndMove();
-            moveCounter=0;
+          moveCounter=0;
         }
 
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)&&direction!="Down"){
-
             direction="Up";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)&&direction!="Up"){
+        }
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)&&direction!="Up"){
             direction="Down";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)&&direction!="Right"){
+        }
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)&&direction!="Right"){
             direction="Left";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)&&direction!="Left"){
+        }
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)&&direction!="Left"){
             direction="Right";
         }
+
       //To remove speed press "-" on the number pad
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_SUBTRACT)){
         	SlowingSpeed++;
@@ -65,9 +69,7 @@ public class Player {
         }
         //To add a piece of the tail press "n"
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)){
-//        	Tail tail=(new Tail(xCoord,yCoord,handler));
-//        	handler.getWorld().body.addLast(tail);
-//        	handler.getWorld().playerLocation[tail.x][tail.y] = true;
+            this.add_tail();
 
         }
 
@@ -84,28 +86,28 @@ public class Player {
         switch (direction){
             case "Left":
                 if(xCoord==0){
-                    kill();
+                    xCoord = handler.getWorld().GridWidthHeightPixelCount-1;
                 }else{
                     xCoord--;
                 }
                 break;
             case "Right":
                 if(xCoord==handler.getWorld().GridWidthHeightPixelCount-1){
-                    kill();
+                    xCoord = 0;
                 }else{
                     xCoord++;
                 }
                 break;
             case "Up":
                 if(yCoord==0){
-                    kill();
+                    yCoord = handler.getWorld().GridWidthHeightPixelCount-1;
                 }else{
                     yCoord--;
                 }
                 break;
             case "Down":
                 if(yCoord==handler.getWorld().GridWidthHeightPixelCount-1){
-                    kill();
+                    yCoord = 0;
                 }else{
                     yCoord++;
                 }
@@ -127,9 +129,14 @@ public class Player {
     }
 
     public void render(Graphics g,Boolean[][] playerLocation){
+        int frameLength = 0;
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
-                g.setColor(Color.YELLOW); //Color the pacman character
+                g.setColor(Color.YELLOW); //Color the pac-man character
+
+                if(playerLocation[i][j]){ // Counts length of player per frame (self collision detection)
+                    frameLength++;
+                }
 
                 if(playerLocation[i][j]||handler.getWorld().appleLocation[i][j]){
                     g.fillRect((i*handler.getWorld().GridPixelsize),
@@ -154,18 +161,27 @@ public class Player {
 
             }
         }
-
+        if(frameLength < length){ // Detects collisions indirectly
+            //this.kill(); //Framing is messing with any type of precision
+        }
 
     }
 
     public void Eat(){
-        length++;
-        Tail tail= null;
+        score = Math.sqrt((2 * score + 1));
         handler.getWorld().appleLocation[xCoord][yCoord]=false;
         handler.getWorld().appleOnBoard=false;
+        this.add_tail(); // Moved to function for better readability
+
+
+    }
+
+    public void add_tail(){
+        length++;
+        Tail tail= null;
         switch (direction){
             case "Left":
-                if( handler.getWorld().body.isEmpty()){
+                if(handler.getWorld().body.isEmpty()){
                     if(this.xCoord!=handler.getWorld().GridWidthHeightPixelCount-1){
                         tail = new Tail(this.xCoord+1,this.yCoord,handler);
                     }else{
@@ -175,7 +191,8 @@ public class Player {
                             tail =new Tail(this.xCoord,this.yCoord+1,handler);
                         }
                     }
-                }else{
+                }
+                else{
                     if(handler.getWorld().body.getLast().x!=handler.getWorld().GridWidthHeightPixelCount-1){
                         tail=new Tail(handler.getWorld().body.getLast().x+1,this.yCoord,handler);
                     }else{
@@ -190,7 +207,7 @@ public class Player {
                 }
                 break;
             case "Right":
-                if( handler.getWorld().body.isEmpty()){
+                if(handler.getWorld().body.isEmpty()){
                     if(this.xCoord!=0){
                         tail=new Tail(this.xCoord-1,this.yCoord,handler);
                     }else{
@@ -214,7 +231,7 @@ public class Player {
                 }
                 break;
             case "Up":
-                if( handler.getWorld().body.isEmpty()){
+                if(handler.getWorld().body.isEmpty()){
                     if(this.yCoord!=handler.getWorld().GridWidthHeightPixelCount-1){
                         tail=(new Tail(this.xCoord,this.yCoord+1,handler));
                     }else{
@@ -238,7 +255,7 @@ public class Player {
                 }
                 break;
             case "Down":
-                if( handler.getWorld().body.isEmpty()){
+                if(handler.getWorld().body.isEmpty()){
                     if(this.yCoord!=0){
                         tail=(new Tail(this.xCoord,this.yCoord-1,handler));
                     }else{
