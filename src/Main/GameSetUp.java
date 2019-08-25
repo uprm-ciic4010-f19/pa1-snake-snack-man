@@ -8,13 +8,9 @@ import Game.GameStates.State;
 import Input.KeyManager;
 import Input.MouseManager;
 import Resources.Images;
-
-import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 
 /**
@@ -47,13 +43,6 @@ public class GameSetUp implements Runnable {
     public State pauseState;
     public State GameOver;
 
-    //Res.music
-    private InputStream audioFile;
-    private AudioInputStream audioStream;
-    private AudioFormat format;
-    private DataLine.Info info;
-    private Clip audioClip;
-
     private BufferedImage loading;
 
     public GameSetUp(String title, int width, int height){
@@ -85,24 +74,7 @@ public class GameSetUp implements Runnable {
         GameOver = new Game.GameStates.GameOver(handler);
         State.setState(menuState);
 
-        try {
 
-            audioFile = getClass().getResourceAsStream("/music/BG.wav");
-            audioStream = AudioSystem.getAudioInputStream(audioFile);
-            format = audioStream.getFormat();
-            info = new DataLine.Info(Clip.class, format);
-            audioClip = (Clip) AudioSystem.getLine(info);
-            audioClip.open(audioStream);
-            audioClip.loop(Clip.LOOP_CONTINUOUSLY);
-            
-
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
     }
 
     public void reStart(){

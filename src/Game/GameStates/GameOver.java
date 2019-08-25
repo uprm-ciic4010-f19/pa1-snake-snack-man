@@ -5,18 +5,24 @@ import Resources.Images;
 import UI.UIImageButton;
 import UI.UIManager;
 
+
 import java.awt.*;
+
+
 
 /**
  * Created by AlexVR on 7/1/2018.
  */
 public class GameOver extends State {
-
+	
     private int count = 0;
     private UIManager uiManager;
 
+ 
     public GameOver(Handler handler) {
+    	
         super(handler);
+       
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUimanager(uiManager);
 
