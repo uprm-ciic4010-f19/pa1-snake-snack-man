@@ -42,7 +42,7 @@ public class MenuState extends State {
                 handler.getMouseManager().setUimanager(null);
                 handler.getGame().reStart();
                 State.setState(handler.getGame().gameState);
-                Music.MusicManagerChange1();//Changes music to in-game music
+                Music.MusicManagerChangeMenuToGame();//Changes music to in-game music
                 
             }
         }));

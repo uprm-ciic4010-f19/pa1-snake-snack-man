@@ -18,8 +18,10 @@ public class Player {
     public boolean justAte;
     private Handler handler;
 
+
     public int xCoord;
     public int yCoord;
+
 
     public int SlowingSpeed=10;
     public int moveCounter;
@@ -70,6 +72,13 @@ public class Player {
         //To add a piece of the tail press "n"
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)){
             this.add_tail();
+
+        }
+        //To select the pause screen press "Esc"
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)){
+
+            State.setState(handler.getGame().pauseState);
+            Game.GameStates.MenuState.Music.MusicManagerChangeGameToPause();
 
         }
 
@@ -287,7 +296,7 @@ public class Player {
     public void kill(){
         length = 0;
         State.setState(handler.getGame().GameOver);
-        Game.GameStates.MenuState.Music.MusicManagerChange2();
+        Game.GameStates.MenuState.Music.MusicManagerGameToGameOver();
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
 
