@@ -28,6 +28,9 @@ public class Player {
 
     public String direction;//is your first name one?
 
+    //NOTE: Test Var
+    public int flicker_count;
+
     public Player(Handler handler){
         this.handler = handler;
         xCoord = 0;
@@ -147,7 +150,15 @@ public class Player {
                     frameLength++;
                 }
 
-                if(playerLocation[i][j]||handler.getWorld().appleLocation[i][j]){
+                if(playerLocation[i][j]){
+                    g.fillRect((i*handler.getWorld().GridPixelsize),
+                            (j*handler.getWorld().GridPixelsize),
+                            handler.getWorld().GridPixelsize,
+                            handler.getWorld().GridPixelsize);
+                }
+
+                if(handler.getWorld().appleLocation[i][j]){
+                    g.setColor(new Color(255, 0, 8));
                     g.fillRect((i*handler.getWorld().GridPixelsize),
                             (j*handler.getWorld().GridPixelsize),
                             handler.getWorld().GridPixelsize,
@@ -156,11 +167,10 @@ public class Player {
 
                 if (!handler.getWorld().body.isEmpty()) {
                     //Call each tail as a ghost
-                    //TODO: since its a linked list its adding a new "tail" in the front and removing the bottom one, inconsistent design.
                     for (int index = 0; index < handler.getWorld().body.size(); index++){
                         int xLoc = handler.getWorld().body.get(index).x;
                         int yLoc = handler.getWorld().body.get(index).y;
-                        g.setColor(handler.getWorld().body.get(index).ghostColor);
+                        g.setColor(handler.getWorld().bodyColor.get(index));
                         g.fillRect((xLoc*handler.getWorld().GridPixelsize),
                                 (yLoc*handler.getWorld().GridPixelsize),
                                 handler.getWorld().GridPixelsize,

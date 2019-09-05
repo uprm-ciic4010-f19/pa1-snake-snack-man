@@ -6,8 +6,9 @@ import Game.Entities.Static.Apple;
 import Main.Handler;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
-
+import java.awt.Color;
 
 /**
  * Created by AlexVR on 7/2/2018.
@@ -36,6 +37,7 @@ public abstract class WorldBase {
     public Boolean[][] playerLocation; //It's an array where true = snake node and false = empty
 
     public LinkedList<Tail> body = new LinkedList<>();
+    public ArrayList<Color> bodyColor = new ArrayList<Color>(); // An array to keep track of all the colors
 
 
     public WorldBase(Handler handler){
