@@ -54,6 +54,9 @@ public abstract class WorldBase {
     }
 
     public void render(Graphics g){
+    	g.setColor(Color.pink);
+    	g.setFont(new Font(Font.SERIF, Font.BOLD, 16));
+    	g.drawString("Score:" + Game.Entities.Dynamic.Player.score, 1, 15);
 
         for (int i = 0; i <= 800; i = i + GridPixelsize) {
 

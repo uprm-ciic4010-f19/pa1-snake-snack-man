@@ -13,7 +13,7 @@ import Game.GameStates.State;
  */
 public class Player {
 
-    public double score = 0;
+    public static int score = 0;
     public int length;
     public boolean justAte;
     private Handler handler;
@@ -52,13 +52,13 @@ public class Player {
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)&&direction!="Down"){
             direction="Up";
         }
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)&&direction!="Up"){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)&&direction!="Up"){
             direction="Down";
         }
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)&&direction!="Right"){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)&&direction!="Right"){
             direction="Left";
         }
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)&&direction!="Left"){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)&&direction!="Left"){
             direction="Right";
         }
 
@@ -187,7 +187,7 @@ public class Player {
     }
 
     public void Eat(){
-        score = Math.sqrt((2 * score + 1));
+        score = (int) Math.sqrt((2 * score + 1))+score;
         handler.getWorld().appleLocation[xCoord][yCoord]=false;
         handler.getWorld().appleOnBoard=false;
         this.add_tail(); // Moved to function for better readability
@@ -261,7 +261,7 @@ public class Player {
                         }
                     }
                 }else{
-                    if(handler.getWorld().body.getLast().y!=handler.getWorld().GridWidthHeightPixelCount-1){
+                    if(handler.getWorld().body.getLast().y!=handler.getWorld().GridWidthHeightPixelCount-1&&this.yCoord<59){
                         tail=(new Tail(handler.getWorld().body.getLast().x,this.yCoord+1,handler));
                     }else{
                         if(handler.getWorld().body.getLast().x!=0){
@@ -285,7 +285,7 @@ public class Player {
                         }
                     }
                 }else{
-                    if(handler.getWorld().body.getLast().y!=0){
+                    if(handler.getWorld().body.getLast().y!=0&&this.yCoord>0){
                         tail=(new Tail(handler.getWorld().body.getLast().x,this.yCoord-1,handler));
                     }else{
                         if(handler.getWorld().body.getLast().x!=0){
