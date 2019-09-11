@@ -30,9 +30,9 @@ public abstract class WorldBase {
 
 
     public Boolean appleOnBoard;
-    protected Apple apple;
+    public Apple apple;
     public Boolean[][] appleLocation;
-
+    public boolean[][] badAppleLocations; // Using boolean instead of Boolean is better for this case scenario
 
     public Boolean[][] playerLocation; //It's an array where true = snake node and false = empty
 

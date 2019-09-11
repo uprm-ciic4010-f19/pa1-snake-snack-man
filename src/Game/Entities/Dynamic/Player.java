@@ -28,8 +28,8 @@ public class Player {
 
     public String direction;//is your first name one?
 
-    //NOTE: Test Var
-    public int flicker_count;
+    public int badAppleSteps = 0;
+    public int badAppleSteps_threshold = 3 * 60; // n * seconds
 
     public Player(Handler handler){
         this.handler = handler;
@@ -44,6 +44,7 @@ public class Player {
 
     public void tick(){
         moveCounter++;
+        badAppleSteps++; //Count the snake steps
         if(moveCounter>=SlowingSpeed) {
           checkCollisionAndMove();
           moveCounter=0;
@@ -64,12 +65,14 @@ public class Player {
 
       //To remove speed press "-" on the number pad
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_SUBTRACT)){
-        	SlowingSpeed++;
+        	//SlowingSpeed++;
+            SlowingSpeed=SlowingSpeed-6;
 
         }
         //To add speed press "+" on the number pad
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ADD)){
-        	SlowingSpeed--;
+        	//SlowingSpeed--;
+            SlowingSpeed=SlowingSpeed-6;
 
         }
         //To add a piece of the tail press "n"
@@ -128,8 +131,14 @@ public class Player {
         handler.getWorld().playerLocation[xCoord][yCoord]=true;
 
 
-        if(handler.getWorld().appleLocation[xCoord][yCoord]){
+        if(handler.getWorld().appleLocation[xCoord][yCoord]){ // Player is in apple's location
+            badAppleSteps = 0; //Reset time till apple goes bad
             Eat();
+        }
+
+        else if(handler.getWorld().badAppleLocations[xCoord][yCoord]){
+            Eat_bad();
+            // if there are too many bad apples start killing them
         }
 
         if(!handler.getWorld().body.isEmpty()) { //handler.getWorld().body linkedlist that keep the values of each tail (not the head)
@@ -138,26 +147,30 @@ public class Player {
             handler.getWorld().body.addFirst(new Tail(x, y,handler)); //Removes the last present tail and adds a new one in front
         }
 
+        if(badAppleSteps >= badAppleSteps_threshold){ //Checks if apple goes bad
+            badAppleSteps = 0;
+            // Make a new apple spawn
+            handler.getWorld().appleLocation[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord]=false;
+            handler.getWorld().appleOnBoard=false;
+
+            // Generate new bad apple
+            handler.getWorld().badAppleLocations[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord] = true;
+        }
+
     }
 
     public void render(Graphics g,Boolean[][] playerLocation){
-        int frameLength = 0;
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
-                g.setColor(Color.YELLOW); //Color the pac-man character
-
-                if(playerLocation[i][j]){ // Counts length of player per frame (self collision detection)
-                    frameLength++;
-                }
-
                 if(playerLocation[i][j]){
+                    g.setColor(Color.YELLOW); //Color the pac-man character
                     g.fillRect((i*handler.getWorld().GridPixelsize),
                             (j*handler.getWorld().GridPixelsize),
                             handler.getWorld().GridPixelsize,
                             handler.getWorld().GridPixelsize);
                 }
 
-                if(handler.getWorld().appleLocation[i][j]){
+                else if(handler.getWorld().appleLocation[i][j]){
                     g.setColor(new Color(255, 0, 8));
                     g.fillRect((i*handler.getWorld().GridPixelsize),
                             (j*handler.getWorld().GridPixelsize),
@@ -165,7 +178,15 @@ public class Player {
                             handler.getWorld().GridPixelsize);
                 }
 
-                if (!handler.getWorld().body.isEmpty()) {
+                else if(handler.getWorld().badAppleLocations[i][j]){
+                    g.setColor(new Color(196, 191, 195));
+                    g.fillRect((i*handler.getWorld().GridPixelsize),
+                            (j*handler.getWorld().GridPixelsize),
+                            handler.getWorld().GridPixelsize,
+                            handler.getWorld().GridPixelsize);
+                }
+
+                else if(!handler.getWorld().body.isEmpty()) {
                     //Call each tail as a ghost
                     for (int index = 0; index < handler.getWorld().body.size(); index++){
                         int xLoc = handler.getWorld().body.get(index).x;
@@ -180,9 +201,6 @@ public class Player {
 
             }
         }
-        if(frameLength < length){ // Detects collisions indirectly
-            //this.kill(); //Framing is messing with any type of precision
-        }
 
     }
 
@@ -193,6 +211,23 @@ public class Player {
         this.add_tail(); // Moved to function for better readability
 
 
+    }
+
+    public void Eat_bad() {
+        score = score - (int) Math.sqrt( (2 * score + 1) );
+        handler.getWorld().badAppleLocations[xCoord][yCoord]=false;
+
+        if (handler.getWorld().bodyColor.size() > 0) {
+            // Remove last tail
+            handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
+            handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
+            handler.getWorld().body.removeLast();
+            //remove one from handler.getWorld().body
+            handler.getWorld().bodyColor.remove(handler.getWorld().bodyColor.size() - 1);
+        }
+        else { // If bad apple is eaten before eating a good apple
+            kill();
+        }
     }
 
     public void add_tail(){

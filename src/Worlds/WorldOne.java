@@ -19,6 +19,7 @@ public class WorldOne extends WorldBase{
         GridPixelsize = (840/GridWidthHeightPixelCount);
         playerLocation = new Boolean[GridWidthHeightPixelCount][GridWidthHeightPixelCount];
         appleLocation = new Boolean[GridWidthHeightPixelCount][GridWidthHeightPixelCount];
+        badAppleLocations = new boolean[GridWidthHeightPixelCount][GridWidthHeightPixelCount];
 
     }
 
@@ -28,6 +29,7 @@ public class WorldOne extends WorldBase{
         player.tick();
         if(!appleOnBoard){
             appleOnBoard=true;
+
             //Generate a random location for the apple to spawn in
             int appleX = new Random().nextInt(handler.getWorld().GridWidthHeightPixelCount-1);
             int appley = new Random().nextInt(handler.getWorld().GridWidthHeightPixelCount-1);
@@ -36,7 +38,7 @@ public class WorldOne extends WorldBase{
             boolean goodCoordinates=false;
             do{
                 //Check if snake is where the apple is located at
-                if(!handler.getWorld().playerLocation[appleX][appley]){
+                if( (!handler.getWorld().playerLocation[appleX][appley]) && (!handler.getWorld().badAppleLocations[appleX][appley]) ){
                     goodCoordinates=true;
                 }
             }while(!goodCoordinates);
