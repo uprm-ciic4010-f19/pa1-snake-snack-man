@@ -4,9 +4,13 @@ import Main.Handler;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
 
 import Game.GameStates.State;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by AlexVR on 7/2/2018.
@@ -29,7 +33,15 @@ public class Player {
     public String direction;//is your first name one?
 
     public int badAppleSteps = 0;
-    public int badAppleSteps_threshold = 3 * 60; // n * seconds
+    public int badAppleSteps_threshold = 8 * 60; // n * seconds
+
+    // Load images
+    public int pacman_steps = 0;
+    public int pacman_direction;// Determines sprite direction
+    public boolean pacman_opening = true;
+    public static BufferedImage[] items;
+    public static BufferedImage[] pacman;
+    public static BufferedImage[][] ghosts;
 
     public Player(Handler handler){
         this.handler = handler;
@@ -39,6 +51,43 @@ public class Player {
         direction= "Right";
         justAte = false;
         length = 1;
+
+        //Sprite loading
+        items = new BufferedImage[2];
+        pacman = new BufferedImage[9];
+        ghosts = new BufferedImage[4][4];
+
+        int pacmanIndex;
+        int ghostsIndex;
+        String ghostPath;
+
+        try { // cleaner way to load player and ghost sprites
+            String[] directions = {"left", "right", "up", "down"};
+            String[] ghostNames = {"blinky", "pinky", "clyde", "inky"};
+            String[] states = {"semi", "full"};
+
+            items[0] = ImageIO.read(getClass().getResourceAsStream("/items/apple.png"));
+            items[1] = ImageIO.read(getClass().getResourceAsStream("/items/grenade.png"));
+            pacman[0] = ImageIO.read(getClass().getResourceAsStream("/player/pacman_closed.png"));
+            pacmanIndex = 1;
+
+            for (int direction = 0; direction < directions.length; direction++){
+                //Load player sprites
+                for (int state = 0; state < states.length; state++){
+                    pacman[pacmanIndex] = ImageIO.read(getClass().getResourceAsStream("/player/pacman_open_" + states[state] + "_" + directions[direction] + ".png"));
+                    pacmanIndex++;
+                }
+
+                //load ghost sprites
+                for (int ghost = 0; ghost < ghosts.length; ghost++){
+                    ghostPath = "/ghosts/" + ghostNames[ghost] + "/" + ghostNames[ghost] + "_" + directions[direction] + "_1.png";
+                    ghosts[ghost][direction] = ImageIO.read(getClass().getResourceAsStream(ghostPath));
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -91,6 +140,7 @@ public class Player {
     }
 
     public void checkCollisionAndMove(){
+
         handler.getWorld().playerLocation[xCoord][yCoord]=false;
         int x = xCoord;
         int y = yCoord;
@@ -100,6 +150,9 @@ public class Player {
         }
         switch (direction){
             case "Left":
+
+                pacman_direction = 0;
+
                 if(xCoord==0){
                     xCoord = handler.getWorld().GridWidthHeightPixelCount-1;
                 }else{
@@ -107,6 +160,9 @@ public class Player {
                 }
                 break;
             case "Right":
+
+                pacman_direction = 2;
+
                 if(xCoord==handler.getWorld().GridWidthHeightPixelCount-1){
                     xCoord = 0;
                 }else{
@@ -114,6 +170,9 @@ public class Player {
                 }
                 break;
             case "Up":
+
+                pacman_direction = 4;
+
                 if(yCoord==0){
                     yCoord = handler.getWorld().GridWidthHeightPixelCount-1;
                 }else{
@@ -121,6 +180,9 @@ public class Player {
                 }
                 break;
             case "Down":
+
+                pacman_direction = 6;
+
                 if(yCoord==handler.getWorld().GridWidthHeightPixelCount-1){
                     yCoord = 0;
                 }else{
@@ -157,33 +219,53 @@ public class Player {
             handler.getWorld().badAppleLocations[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord] = true;
         }
 
+        // Add "movement" to the pacman sprite
+        if (pacman_opening == true){
+            if (pacman_steps == 2){
+                pacman_opening = false;
+                pacman_steps--;
+            }
+            else{
+                pacman_steps++;
+            }
+        }
+        else {
+            if (pacman_steps == 0){
+                pacman_opening = true;
+                pacman_steps++;
+            }
+            else{
+                pacman_steps--;
+            }
+        }
+
     }
 
     public void render(Graphics g,Boolean[][] playerLocation){
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
                 if(playerLocation[i][j]){
-                    g.setColor(Color.YELLOW); //Color the pac-man character
-                    g.fillRect((i*handler.getWorld().GridPixelsize),
-                            (j*handler.getWorld().GridPixelsize),
-                            handler.getWorld().GridPixelsize,
-                            handler.getWorld().GridPixelsize);
+                    if(pacman_steps == 0){
+                        pacman_direction = 0;
+                    }
+                    g.drawImage(pacman[pacman_steps + pacman_direction],(i*handler.getWorld().GridPixelsize),
+                                    (j*handler.getWorld().GridPixelsize),
+                                    handler.getWorld().GridPixelsize,
+                                    handler.getWorld().GridPixelsize, null);
                 }
 
                 else if(handler.getWorld().appleLocation[i][j]){
-                    g.setColor(new Color(255, 0, 8));
-                    g.fillRect((i*handler.getWorld().GridPixelsize),
+                    g.drawImage(items[0],(i*handler.getWorld().GridPixelsize),
                             (j*handler.getWorld().GridPixelsize),
                             handler.getWorld().GridPixelsize,
-                            handler.getWorld().GridPixelsize);
+                            handler.getWorld().GridPixelsize, null);
                 }
 
                 else if(handler.getWorld().badAppleLocations[i][j]){
-                    g.setColor(new Color(196, 191, 195));
-                    g.fillRect((i*handler.getWorld().GridPixelsize),
+                    g.drawImage(items[1],(i*handler.getWorld().GridPixelsize),
                             (j*handler.getWorld().GridPixelsize),
                             handler.getWorld().GridPixelsize,
-                            handler.getWorld().GridPixelsize);
+                            handler.getWorld().GridPixelsize, null);
                 }
 
                 else if(!handler.getWorld().body.isEmpty()) {
@@ -191,11 +273,13 @@ public class Player {
                     for (int index = 0; index < handler.getWorld().body.size(); index++){
                         int xLoc = handler.getWorld().body.get(index).x;
                         int yLoc = handler.getWorld().body.get(index).y;
-                        g.setColor(handler.getWorld().bodyColor.get(index));
-                        g.fillRect((xLoc*handler.getWorld().GridPixelsize),
+
+                        g.drawImage(ghosts[handler.getWorld().bodyColor.get(index)][pacman_direction%2],
+                                (xLoc*handler.getWorld().GridPixelsize),
                                 (yLoc*handler.getWorld().GridPixelsize),
                                 handler.getWorld().GridPixelsize,
-                                handler.getWorld().GridPixelsize);
+                                handler.getWorld().GridPixelsize, null);
+
                     }
                 }
 

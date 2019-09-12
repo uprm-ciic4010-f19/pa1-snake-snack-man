@@ -12,18 +12,18 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class MusicManager {
-	private InputStream audioFile = getClass().getResourceAsStream("/music/nature.wav");;
+	private InputStream audioFile = getClass().getResourceAsStream("/music/pacman-intro.wav");;
 	private AudioInputStream audioStream;
 	private AudioFormat format;
 	private DataLine.Info info;
 	private Clip audioClip;
-	private InputStream audioFile2 = getClass().getResourceAsStream("/music/BG.wav");;
+	private InputStream audioFile2 = getClass().getResourceAsStream("/music/pacman_chomp.wav");;
 	private AudioInputStream audioStream2;
 	private Clip audioClip2;
-	private InputStream audioFile3 = getClass().getResourceAsStream("/music/nature.wav");
+	private InputStream audioFile3 = getClass().getResourceAsStream("/music/pacman-intro.wav");
 	private AudioInputStream audioStream3;
 	private Clip audioClip3;
-	private InputStream audioFile4 = getClass().getResourceAsStream("/music/nature.wav");
+	private InputStream audioFile4 = getClass().getResourceAsStream("/music/pacman-intro.wav");
 	private AudioInputStream audioStream4;
 	private Clip audioClip4;
 	private boolean NotInitialized=true;
@@ -39,7 +39,7 @@ public class MusicManager {
 			NotInitialized=true;
 			audioClip.close();	
 			audioStream.close();
-			audioFile = getClass().getResourceAsStream("/music/nature.wav");
+			audioFile = getClass().getResourceAsStream("/music/pacman-intro.wav");
 			audioStream = AudioSystem.getAudioInputStream(audioFile);
 			format = audioStream.getFormat();
 			info = new DataLine.Info(Clip.class, format);
@@ -49,7 +49,7 @@ public class MusicManager {
 			
 			audioClip2.close();
 			audioStream2.close();
-			audioFile2 = getClass().getResourceAsStream("/music/BG.wav");
+			audioFile2 = getClass().getResourceAsStream("/music/pacman_chomp.wav");
 			audioStream2 = AudioSystem.getAudioInputStream(audioFile2);
 			format = audioStream2.getFormat();
 			info = new DataLine.Info(Clip.class, format);
@@ -57,7 +57,7 @@ public class MusicManager {
 			
 			audioClip3.close();
 			audioStream3.close();
-			audioFile3 = getClass().getResourceAsStream("/music/nature.wav");
+			audioFile3 = getClass().getResourceAsStream("/music/pacman-intro.wav");
 			audioStream3 = AudioSystem.getAudioInputStream(audioFile3);
 			format = audioStream3.getFormat();
 			info = new DataLine.Info(Clip.class, format);
@@ -65,7 +65,7 @@ public class MusicManager {
 			
 			audioClip4.close();
 			audioStream4.close();
-			audioFile4 = getClass().getResourceAsStream("/music/nature.wav");
+			audioFile4 = getClass().getResourceAsStream("/music/pacman-intro.wav");
 			audioStream4 = AudioSystem.getAudioInputStream(audioFile4);
 			format = audioStream4.getFormat();
 			info = new DataLine.Info(Clip.class, format);
