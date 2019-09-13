@@ -100,16 +100,16 @@ public class Player {
           moveCounter=0;
         }
 
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)&&direction!="Down"){
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)&&!direction.equals("Down")){
             direction="Up";
         }
-        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)&&direction!="Up"){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)&&!direction.equals("Up")){
             direction="Down";
         }
-        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)&&direction!="Right"){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)&&!direction.equals("Right")){
             direction="Left";
         }
-        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)&&direction!="Left"){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)&&!direction.equals("Left")){
             direction="Right";
         }
 
@@ -221,7 +221,7 @@ public class Player {
         }
 
         // Add "movement" to the pacman sprite
-        if (pacman_opening == true){
+        if (pacman_opening){
             if (pacman_steps == 2){
                 pacman_opening = false;
                 pacman_steps--;
