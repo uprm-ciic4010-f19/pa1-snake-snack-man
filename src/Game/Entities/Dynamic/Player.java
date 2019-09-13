@@ -36,8 +36,8 @@ public class Player {
 	public String direction;//is your first name one?
 
 	public static int badAppleCounter=0;
-	public int badAppleSteps = 0;
-	public int badAppleSteps_threshold = 5 * 60; // n * seconds
+	public static int badAppleSteps = 0;
+	public static int badAppleSteps_threshold = 5 * 60; // n * seconds
 	public static int TimeTillRotten=5;
 
 	// Load images
@@ -257,18 +257,18 @@ public class Player {
 			handler.getWorld().body.addFirst(new Tail(x, y,handler)); //Removes the last present tail and adds a new one in front
 		}
 
-		if(badAppleSteps >= badAppleSteps_threshold&&badAppleCounter<30){ //Checks if apple goes bad
+		if(handler.getWorld().apple.isGood()==false&&badAppleCounter<30){ //Checks if apple goes bad
 			badAppleSteps = 0;
 			TimeTillRotten=5;
 			badAppleCounter++;
 			// Make a new apple spawn
 			handler.getWorld().appleLocation[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord]=false;
 			handler.getWorld().appleOnBoard=false;
-			handler.getWorld().apple.Good=true;
+
 
 			// Generate new bad apple
 			handler.getWorld().badAppleLocations[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord] = true;
-			handler.getWorld().apple.Good=false;
+
 		}
 		if(experiment==true) {
 			// Add "movement" to the pacman sprite

@@ -53,7 +53,7 @@ public abstract class WorldBase {
 
 
     }
-
+//Takes care of rendering score and rotten timer
     public void render(Graphics g){
     	g.setColor(Color.pink);
     	g.setFont(new Font(Font.SERIF, Font.BOLD, 20));

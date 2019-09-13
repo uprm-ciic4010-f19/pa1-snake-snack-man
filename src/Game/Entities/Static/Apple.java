@@ -11,16 +11,18 @@ public class Apple {
 
     public int xCoord;
     public int yCoord;
-    public boolean Good=true;
+    
 
-    public Apple(Handler handler,int x, int y,boolean Good){
+    public Apple(Handler handler,int x, int y){
         this.handler=handler;
         this.xCoord=x;
         this.yCoord=y;
-        this.Good=Good;
     }
     public boolean isGood() {
-    return Good;}
+    	if(Game.Entities.Dynamic.Player.badAppleSteps >= Game.Entities.Dynamic.Player.badAppleSteps_threshold) {
+    		return false;
+    	}
+    return true ;}
 
 
 }

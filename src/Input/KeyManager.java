@@ -51,7 +51,7 @@ public class KeyManager implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() < 0 || e.getKeyCode() >= keys.length)
 			return;
-		if(Game.Entities.Dynamic.Player.Stall==true) {
+		if(Game.Entities.Dynamic.Player.Stall==true) {//adds brief delay between key presses
 				try {
 			TimeUnit.MICROSECONDS.sleep(10000);
 		} catch (InterruptedException e1) {
