@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import Game.GameStates.State;
@@ -112,7 +113,7 @@ public class Player {
             direction="Right";
         }
 
-      //To remove speed press "-" on the number pad
+        //To remove speed press "-" on the number pad
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_SUBTRACT)){
         	//SlowingSpeed++;
             SlowingSpeed=SlowingSpeed-6;
@@ -300,8 +301,8 @@ public class Player {
     public void Eat_bad() {
         score = score - (int) Math.sqrt( (2 * score + 1) );
         handler.getWorld().badAppleLocations[xCoord][yCoord]=false;
-
-        if (handler.getWorld().bodyColor.size() > 0) {
+        SlowingSpeed=SlowingSpeed+6;
+        try{
             // Remove last tail
             handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
             handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
@@ -309,7 +310,7 @@ public class Player {
             //remove one from handler.getWorld().body
             handler.getWorld().bodyColor.remove(handler.getWorld().bodyColor.size() - 1);
         }
-        else { // If bad apple is eaten before eating a good apple
+        catch (NoSuchElementException e){
             kill();
         }
     }
