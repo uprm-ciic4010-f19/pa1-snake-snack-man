@@ -22,6 +22,7 @@ public class Player {
     public int length;
     public boolean justAte;
     private Handler handler;
+    public static boolean Stall=true;
 
 
     public int xCoord;
@@ -33,8 +34,10 @@ public class Player {
 
     public String direction;//is your first name one?
 
+    public static int badAppleCounter=0;
     public int badAppleSteps = 0;
-    public int badAppleSteps_threshold = 8 * 60; // n * seconds
+    public int badAppleSteps_threshold = 5 * 60; // n * seconds
+    public static int TimeTillRotten=5;
 
     // Load images
     public int pacman_steps = 0;
@@ -99,6 +102,15 @@ public class Player {
           checkCollisionAndMove();
           moveCounter=0;
         }
+        if(SlowingSpeed>6) {
+        	Stall=true;
+        }
+        else {
+        	Stall=false;
+        }
+        if((badAppleSteps%60)==0) {
+        	TimeTillRotten--;
+        }
 
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)&&!direction.equals("Down")){
             direction="Up";
@@ -116,7 +128,7 @@ public class Player {
         //To remove speed press "-" on the number pad
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_SUBTRACT)){
         	//SlowingSpeed++;
-            SlowingSpeed=SlowingSpeed-6;
+            SlowingSpeed=SlowingSpeed+6;
 
         }
         //To add speed press "+" on the number pad
@@ -196,10 +208,12 @@ public class Player {
 
         if(handler.getWorld().appleLocation[xCoord][yCoord]){ // Player is in apple's location
             badAppleSteps = 0; //Reset time till apple goes bad
+            TimeTillRotten=6;
             Eat();
         }
 
         else if(handler.getWorld().badAppleLocations[xCoord][yCoord]){
+        	badAppleCounter--;
             Eat_bad();
             // if there are too many bad apples start killing them
         }
@@ -210,8 +224,10 @@ public class Player {
             handler.getWorld().body.addFirst(new Tail(x, y,handler)); //Removes the last present tail and adds a new one in front
         }
 
-        if(badAppleSteps >= badAppleSteps_threshold){ //Checks if apple goes bad
+        if(badAppleSteps >= badAppleSteps_threshold&&badAppleCounter<30){ //Checks if apple goes bad
             badAppleSteps = 0;
+            TimeTillRotten=6;
+            badAppleCounter++;
             // Make a new apple spawn
             handler.getWorld().appleLocation[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord]=false;
             handler.getWorld().appleOnBoard=false;
@@ -299,7 +315,9 @@ public class Player {
     }
 
     public void Eat_bad() {
-        score = score - (int) Math.sqrt( (2 * score + 1) );
+    	if((score - (int) Math.sqrt( (2 * score + 1)))>=0){
+    		score = score - (int) Math.sqrt( (2 * score + 1) );
+    	}
         handler.getWorld().badAppleLocations[xCoord][yCoord]=false;
         SlowingSpeed=SlowingSpeed+6;
         try{

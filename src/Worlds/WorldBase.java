@@ -55,8 +55,11 @@ public abstract class WorldBase {
 
     public void render(Graphics g){
     	g.setColor(Color.pink);
-    	g.setFont(new Font(Font.SERIF, Font.BOLD, 16));
-    	g.drawString("Score:" + Game.Entities.Dynamic.Player.score, 1, 15);
+    	g.setFont(new Font(Font.SERIF, Font.BOLD, 20));
+    	g.drawString("Score:" + Game.Entities.Dynamic.Player.score, 5, 18);
+    	g.setColor(Color.pink);
+    	g.setFont(new Font(Font.SERIF, Font.BOLD, 20));
+    	g.drawString("Time till rotten:" + Game.Entities.Dynamic.Player.TimeTillRotten, 680, 20);
     }
 
 }

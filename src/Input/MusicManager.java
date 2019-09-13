@@ -20,10 +20,10 @@ public class MusicManager {
 	private InputStream audioFile2 = getClass().getResourceAsStream("/music/pacman_chomp.wav");;
 	private AudioInputStream audioStream2;
 	private Clip audioClip2;
-	private InputStream audioFile3 = getClass().getResourceAsStream("/music/pacman-intro.wav");
+	private InputStream audioFile3 = getClass().getResourceAsStream("/music/Elevator.wav");
 	private AudioInputStream audioStream3;
 	private Clip audioClip3;
-	private InputStream audioFile4 = getClass().getResourceAsStream("/music/pacman-intro.wav");
+	private InputStream audioFile4 = getClass().getResourceAsStream("/music/PacMan Game Over.wav");
 	private AudioInputStream audioStream4;
 	private Clip audioClip4;
 	private boolean NotInitialized=true;
@@ -36,6 +36,9 @@ public class MusicManager {
 		try {
 			if(Restart==true) {
 				Game.GameStates.PauseState.count=0;
+				Game.Entities.Dynamic.Player.score=0;
+				Game.Entities.Dynamic.Player.TimeTillRotten=5;
+				Game.Entities.Dynamic.Player.badAppleCounter=0;
 			NotInitialized=true;
 			audioClip.close();	
 			audioStream.close();
@@ -57,7 +60,7 @@ public class MusicManager {
 			
 			audioClip3.close();
 			audioStream3.close();
-			audioFile3 = getClass().getResourceAsStream("/music/pacman-intro.wav");
+			audioFile3 = getClass().getResourceAsStream("/music/Elevator.wav");
 			audioStream3 = AudioSystem.getAudioInputStream(audioFile3);
 			format = audioStream3.getFormat();
 			info = new DataLine.Info(Clip.class, format);
@@ -65,7 +68,7 @@ public class MusicManager {
 			
 			audioClip4.close();
 			audioStream4.close();
-			audioFile4 = getClass().getResourceAsStream("/music/pacman-intro.wav");
+			audioFile4 = getClass().getResourceAsStream("/music/PacMan Game Over.wav");
 			audioStream4 = AudioSystem.getAudioInputStream(audioFile4);
 			format = audioStream4.getFormat();
 			info = new DataLine.Info(Clip.class, format);
@@ -185,7 +188,7 @@ public class MusicManager {
 		try {
 			audioClip2.stop();
 			audioClip4.open(audioStream4);
-			audioClip4.loop(Clip.LOOP_CONTINUOUSLY);
+			audioClip4.start();
 
 
 		} catch (IOException e) {

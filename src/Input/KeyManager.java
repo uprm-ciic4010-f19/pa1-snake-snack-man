@@ -2,6 +2,7 @@ package Input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -50,6 +51,13 @@ public class KeyManager implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() < 0 || e.getKeyCode() >= keys.length)
 			return;
+		if(Game.Entities.Dynamic.Player.Stall==true) {
+				try {
+			TimeUnit.MICROSECONDS.sleep(10000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}}
 		keys[e.getKeyCode()] = true;
 	}
 
@@ -57,6 +65,7 @@ public class KeyManager implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if(e.getKeyCode() < 0 || e.getKeyCode() >= keys.length)
 			return;
+		
 		keys[e.getKeyCode()] = false;
 	}
 

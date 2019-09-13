@@ -16,6 +16,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>res/Buttons/BackToTitle.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/BackToTitle.png</location>
+		</link>
+		<link>
+			<name>res/Buttons/BackToTitle2.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/BackToTitle2.png</location>
+		</link>
+		<link>
 			<name>res/Buttons/Exit.png</name>
 			<type>1</type>
 			<location>C:/Users/Victor/Pictures/Exit.png</location>
@@ -36,6 +46,21 @@
 			<location>C:/Users/Victor/Pictures/PacP.png</location>
 		</link>
 		<link>
+			<name>res/Buttons/Pause Screen.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Downloads/Pause Screen.png</location>
+		</link>
+		<link>
+			<name>res/Buttons/Resume(1).png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/Resume(1).png</location>
+		</link>
+		<link>
+			<name>res/Buttons/Resume(2).png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Pictures/Resume(2).png</location>
+		</link>
+		<link>
 			<name>res/Sheets/PacManGameOver.png</name>
 			<type>1</type>
 			<location>C:/Users/Victor/Downloads/PacManGameOver.png</location>
@@ -49,6 +74,21 @@
 			<name>res/music/Elevator.wav</name>
 			<type>1</type>
 			<location>C:/Users/Victor/Music/Elevator.wav</location>
+		</link>
+		<link>
+			<name>res/music/PacMan Game Over.wav</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Downloads/PacMan Game Over.wav</location>
+		</link>
+		<link>
+			<name>res/music/pacman-intro.wav</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Music/pacman-intro.wav</location>
+		</link>
+		<link>
+			<name>res/music/pacman_chomp.wav</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Music/pacman_chomp.wav</location>
 		</link>
 	</linkedResources>
 </projectDescription>
