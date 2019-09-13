@@ -29,6 +29,7 @@ public class PauseState extends State {
         }));
 
         uiManager.addObjects(new UIImageButton(70, (223+(64+16))+(64+16), 256, 74, Images.BTitle, () -> {
+        	Game.Entities.Dynamic.Player.experiment=false;
             handler.getMouseManager().setUimanager(null);
             Game.GameStates.MenuState.Music.MusicManagerPauseToMenu();
             State.setState(handler.getGame().menuState);

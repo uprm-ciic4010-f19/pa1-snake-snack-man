@@ -20,6 +20,7 @@ public class Images {
     public static BufferedImage[] Exit;
     public static BufferedImage[] BTitle;
     public static BufferedImage[] Options;
+    public static BufferedImage[] Experimental;
     public static ImageIcon icon;
 
     public Images() {
@@ -30,6 +31,7 @@ public class Images {
         Exit = new BufferedImage[2];
         Options = new BufferedImage[2];
         TryAgain = new BufferedImage[2];
+        Experimental = new BufferedImage[2];
 
         try {
 
@@ -43,6 +45,8 @@ public class Images {
             Exit[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/ExitP.png"));
             TryAgain[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Pac.png"));
             TryAgain[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/PacP.png"));
+            Experimental[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/xp.png"));
+            Experimental[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/xp2.png"));
             
             BTitle[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/BackToTitle2.png"));
             Options[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Options.png"));

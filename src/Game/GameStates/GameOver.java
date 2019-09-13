@@ -29,15 +29,14 @@ public class GameOver extends State {
         
 
         uiManager.addObjects(new UIImageButton(430, 420, 128, 128, Images.Exit, () -> {
+        	
             handler.getMouseManager().setUimanager(null);
             System.exit(0);
         }));
 
 
         uiManager.addObjects(new UIImageButton(270, 420, 128, 128, Images.TryAgain, () -> {
-//            handler.getMouseManager().setUimanager(null);
-//            handler.getGame().reStart();
-//            State.setState(handler.getGame().gameState);
+        	Game.Entities.Dynamic.Player.experiment=false;
             handler.getMouseManager().setUimanager(null);
             Game.GameStates.MenuState.Music.MusicManagerPauseToMenu();
             State.setState(handler.getGame().menuState);

@@ -23,6 +23,7 @@ public class Player {
     public boolean justAte;
     private Handler handler;
     public static boolean Stall=true;
+    public static boolean experiment=false;
 
 
     public int xCoord;
@@ -56,6 +57,7 @@ public class Player {
         justAte = false;
         length = 1;
 
+        if(experiment==true) {
         //Sprite loading
         items = new BufferedImage[2];
         pacman = new BufferedImage[9];
@@ -91,13 +93,16 @@ public class Player {
         }
         catch (IOException e) {
             e.printStackTrace();
-        }
+        }}
 
     }
 
     public void tick(){
         moveCounter++;
         badAppleSteps++; //Count the snake steps
+        if((badAppleSteps%60)==0) {
+        	TimeTillRotten--;
+        }
         if(moveCounter>=SlowingSpeed) {
           checkCollisionAndMove();
           moveCounter=0;
@@ -107,9 +112,6 @@ public class Player {
         }
         else {
         	Stall=false;
-        }
-        if((badAppleSteps%60)==0) {
-        	TimeTillRotten--;
         }
 
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)&&!direction.equals("Down")){
@@ -126,7 +128,7 @@ public class Player {
         }
 
         //To remove speed press "-" on the number pad
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_SUBTRACT)){
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_SUBTRACT)&&SlowingSpeed<10){
         	//SlowingSpeed++;
             SlowingSpeed=SlowingSpeed+6;
 
@@ -160,7 +162,7 @@ public class Player {
         for(int i=0;i<handler.getWorld().body.size();i++) {
         	if(x==handler.getWorld().body.get(i).x&&y==handler.getWorld().body.get(i).y)
         		kill();
-        }
+        }if(experiment==true) {
         switch (direction){
             case "Left":
 
@@ -202,13 +204,44 @@ public class Player {
                     yCoord++;
                 }
                 break;
+        }}else {
+        	 switch (direction){
+             case "Left":
+                 if(xCoord==0){
+                     xCoord = handler.getWorld().GridWidthHeightPixelCount-1;
+                 }else{
+                     xCoord--;
+                 }
+                 break;
+             case "Right":
+                 if(xCoord==handler.getWorld().GridWidthHeightPixelCount-1){
+                     xCoord = 0;
+                 }else{
+                     xCoord++;
+                 }
+                 break;
+             case "Up":
+                 if(yCoord==0){
+                     yCoord = handler.getWorld().GridWidthHeightPixelCount-1;
+                 }else{
+                     yCoord--;
+                 }
+                 break;
+             case "Down":
+                 if(yCoord==handler.getWorld().GridWidthHeightPixelCount-1){
+                     yCoord = 0;
+                 }else{
+                     yCoord++;
+                 }
+                 break;
+         }
         }
         handler.getWorld().playerLocation[xCoord][yCoord]=true;
 
 
         if(handler.getWorld().appleLocation[xCoord][yCoord]){ // Player is in apple's location
             badAppleSteps = 0; //Reset time till apple goes bad
-            TimeTillRotten=6;
+            TimeTillRotten=5;
             Eat();
         }
 
@@ -226,7 +259,7 @@ public class Player {
 
         if(badAppleSteps >= badAppleSteps_threshold&&badAppleCounter<30){ //Checks if apple goes bad
             badAppleSteps = 0;
-            TimeTillRotten=6;
+            TimeTillRotten=5;
             badAppleCounter++;
             // Make a new apple spawn
             handler.getWorld().appleLocation[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord]=false;
@@ -235,7 +268,7 @@ public class Player {
             // Generate new bad apple
             handler.getWorld().badAppleLocations[handler.getWorld().apple.xCoord][handler.getWorld().apple.yCoord] = true;
         }
-
+        if(experiment==true) {
         // Add "movement" to the pacman sprite
         if (pacman_opening){
             if (pacman_steps == 2){
@@ -254,11 +287,12 @@ public class Player {
             else{
                 pacman_steps--;
             }
-        }
+        }}
 
     }
 
     public void render(Graphics g,Boolean[][] playerLocation){
+    	if(experiment==true) {
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
                 if(playerLocation[i][j]){
@@ -291,7 +325,7 @@ public class Player {
                         int xLoc = handler.getWorld().body.get(index).x;
                         int yLoc = handler.getWorld().body.get(index).y;
 
-                        g.drawImage(ghosts[handler.getWorld().bodyColor.get(index)][pacman_direction%2],
+                        g.drawImage(ghosts[handler.getWorld().bodyColor2.get(index)][pacman_direction%2],
                                 (xLoc*handler.getWorld().GridPixelsize),
                                 (yLoc*handler.getWorld().GridPixelsize),
                                 handler.getWorld().GridPixelsize,
@@ -301,7 +335,48 @@ public class Player {
                 }
 
             }
-        }
+        }}
+    	else {        for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
+            for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
+                if(playerLocation[i][j]){
+                    g.setColor(Color.YELLOW); //Color the pac-man character
+                    g.fillRect((i*handler.getWorld().GridPixelsize),
+                            (j*handler.getWorld().GridPixelsize),
+                            handler.getWorld().GridPixelsize,
+                            handler.getWorld().GridPixelsize);
+                }
+
+                else if(handler.getWorld().appleLocation[i][j]){
+                    g.setColor(new Color(255, 0, 8));
+                    g.fillRect((i*handler.getWorld().GridPixelsize),
+                            (j*handler.getWorld().GridPixelsize),
+                            handler.getWorld().GridPixelsize,
+                            handler.getWorld().GridPixelsize);
+                }
+
+                else if(handler.getWorld().badAppleLocations[i][j]){
+                    g.setColor(new Color(196, 191, 195));
+                    g.fillRect((i*handler.getWorld().GridPixelsize),
+                            (j*handler.getWorld().GridPixelsize),
+                            handler.getWorld().GridPixelsize,
+                            handler.getWorld().GridPixelsize);
+                }
+
+                else if(!handler.getWorld().body.isEmpty()) {
+                    //Call each tail as a ghost
+                    for (int index = 0; index < handler.getWorld().body.size(); index++){
+                        int xLoc = handler.getWorld().body.get(index).x;
+                        int yLoc = handler.getWorld().body.get(index).y;
+                        g.setColor(handler.getWorld().bodyColor.get(index));
+                        g.fillRect((xLoc*handler.getWorld().GridPixelsize),
+                                (yLoc*handler.getWorld().GridPixelsize),
+                                handler.getWorld().GridPixelsize,
+                                handler.getWorld().GridPixelsize);
+                    }
+                }
+
+            }
+        }}
 
     }
 
@@ -326,7 +401,11 @@ public class Player {
             handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
             handler.getWorld().body.removeLast();
             //remove one from handler.getWorld().body
-            handler.getWorld().bodyColor.remove(handler.getWorld().bodyColor.size() - 1);
+            if(experiment==true) {
+            	handler.getWorld().bodyColor2.remove(handler.getWorld().bodyColor2.size() - 1);
+            }
+            else {
+            handler.getWorld().bodyColor.remove(handler.getWorld().bodyColor.size() - 1);}
         }
         catch (NoSuchElementException e){
             kill();
@@ -438,7 +517,8 @@ public class Player {
         }
         handler.getWorld().body.addLast(tail);
         handler.getWorld().playerLocation[tail.x][tail.y] = true;
-        SlowingSpeed=SlowingSpeed-6;
+        if(SlowingSpeed>0) {
+        SlowingSpeed=SlowingSpeed-6;}
     }
 
     public void kill(){

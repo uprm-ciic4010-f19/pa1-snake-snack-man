@@ -46,6 +46,18 @@ public class MenuState extends State {
                 
             }
         }));
+        uiManager.addObjects(new UIImageButton(handler.getWidth()-128, handler.getHeight()-64, 128, 64, Images.Experimental, new ClickListlener() {
+            @Override
+            public void onClick() {
+            	Game.Entities.Dynamic.Player.experiment=true;
+                handler.getMouseManager().setUimanager(null);
+                handler.getGame().reStart();
+                
+                State.setState(handler.getGame().gameState);
+                Music.MusicManagerChangeMenuToGame();//Changes music to in-game music
+                
+            }
+        }));
     }
   
     @Override

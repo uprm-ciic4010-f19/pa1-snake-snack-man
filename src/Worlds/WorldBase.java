@@ -37,8 +37,9 @@ public abstract class WorldBase {
     public Boolean[][] playerLocation; //It's an array where true = snake node and false = empty
 
     public LinkedList<Tail> body = new LinkedList<>();
-    public ArrayList<Integer> bodyColor = new ArrayList<Integer>(); // An array to keep track of all the colors
 
+    public ArrayList<Color> bodyColor = new ArrayList<Color>();// An array to keep track of all the colors
+    public ArrayList<Integer> bodyColor2 = new ArrayList<Integer>();
 
     public WorldBase(Handler handler){
         this.handler = handler;
@@ -63,3 +64,4 @@ public abstract class WorldBase {
     }
 
 }
+

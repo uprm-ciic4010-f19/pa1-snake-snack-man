@@ -61,6 +61,16 @@
 			<location>C:/Users/Victor/Pictures/Resume(2).png</location>
 		</link>
 		<link>
+			<name>res/Buttons/xp.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Downloads/xp.png</location>
+		</link>
+		<link>
+			<name>res/Buttons/xp2.png</name>
+			<type>1</type>
+			<location>C:/Users/Victor/Downloads/xp2.png</location>
+		</link>
+		<link>
 			<name>res/Sheets/PacManGameOver.png</name>
 			<type>1</type>
 			<location>C:/Users/Victor/Downloads/PacManGameOver.png</location>
